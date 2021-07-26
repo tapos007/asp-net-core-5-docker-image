@@ -20,29 +20,4 @@ services:
       - percona
     environment:
       - PMA_HOST=percona
-    
-
-  mongo:
-    image: mongo
-    ports:
-    - "27017:27017"
-    restart: always
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: ${MONGODB_USERNAME}
-      MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_PASSWORD}
-
-  mongo-express:
-    image: mongo-express
-    ports:
-      - 8081:8081
-    depends_on:
-      - mongo
-    restart: always
-    environment:
-      ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGODB_USERNAME}
-      ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGODB_PASSWORD}
-      ME_CONFIG_MONGODB_SERVER: mongo
-        
-      
-    
       
