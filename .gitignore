@@ -642,6 +642,7 @@ FodyWeavers.xsd
 *.msm
 *.msp
 
+**/appsettings.Development.json
 # JetBrains Rider
 
 ### VisualStudio Patch ###
