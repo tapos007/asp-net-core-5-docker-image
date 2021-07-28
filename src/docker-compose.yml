@@ -7,11 +7,14 @@ services:
         
   percona:
     image: "percona:8.0"
+    volumes:
+      - db-data:/var/lib/mysql
     ports:
     - "3306:3306"
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
-  
+
+        
   phpmyadmin:
     image: "phpmyadmin"
     ports:
@@ -20,4 +23,7 @@ services:
       - percona
     environment:
       - PMA_HOST=percona
+        
+volumes: 
+  db-data:
       
