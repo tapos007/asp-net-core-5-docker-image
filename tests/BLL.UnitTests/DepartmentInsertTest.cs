@@ -19,9 +19,6 @@ namespace BLL.UnitTests
         private readonly Mock<IDepartmentRepository> _departmentRepositoryMock;
         private readonly List<Department> _availableDepartment;
         private readonly Mock<IUnitOfWork> _unitOfWorkMock;
-        
-
-
         public DepartmentInsertTest()
         {
             
