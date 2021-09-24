@@ -1,5 +1,6 @@
 using System;
 using DLL.EFCORE;
+using DLL.EFCORE.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,6 +23,9 @@ namespace DLL
                     .EnableSensitiveDataLogging() // <-- These two calls are optional but help
                     .EnableDetailedErrors()       // <-- with debugging (remove for production).
             );
+            
+            services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
         }
     }
 }

@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using DLL.EFCORE;
 using DLL.EFCORE.Model;
+using DLL.EFCORE.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace BLL.Services
@@ -14,24 +16,52 @@ namespace BLL.Services
 
     public class DepartmentService : IDepartmentService
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IDepartmentRepository _departmentRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public DepartmentService(ApplicationDbContext context)
+        public DepartmentService(IDepartmentRepository departmentRepository,IUnitOfWork unitOfWork)
         {
-            _context = context;
+            _departmentRepository = departmentRepository;
+            _unitOfWork = unitOfWork;
         }
+
 
         public async Task<Department> Add(Department department)
         {
-            await _context.Departments.AddAsync(department);
-            await _context.SaveChangesAsync();
+            ValidateDepartmentRequestData(department);
+            var availableDepartment = await _departmentRepository.FirstOrDefaultAsync(x => x.Code == department.Code ||
+                x.Name == department.Name);
 
-            return department;
+            if (availableDepartment != null)
+            {
+                throw new Exception("name or code already in our system");
+            }
+            await _departmentRepository.CreateAsync(department);
+
+            
+            if (await _unitOfWork.Commit())
+            {
+                return department;
+            }
+
+            throw new Exception("data save not successfully");
+        }
+
+        private void ValidateDepartmentRequestData(Department department)
+        {
+            if (department == null)
+            {
+                throw new ArgumentNullException(nameof(department));
+            }
+            if (string.IsNullOrEmpty(department.Code) || string.IsNullOrEmpty(department.Name))
+            {
+                throw new Exception("input is empty name or code");
+            }
         }
 
         public async Task<List<Department>> GetAll()
         {
-            return await _context.Departments.ToListAsync();
+            return await _departmentRepository.QueryAll(null).ToListAsync();
         }
     }
 }

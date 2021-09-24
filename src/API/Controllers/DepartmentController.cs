@@ -26,6 +26,7 @@ namespace API.Controllers
         [HttpPost("insert-department")]
         public async Task<IActionResult> AddDepartment(Department department)
         {
+            
             return Ok(await _departmentService.Add(department));
         }
     }
