@@ -1,21 +1,30 @@
 pipeline {
     agent any
-
+    environment {
+        registry = "https://hub.docker.com/repository/docker/tapos007/dotnet-test"
+        registryCredential = 'dockerhub'
+    }
     stages {
+        stage('Clean') {
+            steps {                
+                echo 'Clear Started...'
+                sh 'dotnet clean -c Release'
+                echo 'Clear Completed...'
+            }
+        }
         stage('Build') {
             steps {
-                echo 'Building..'
+                echo 'Build Started...'
+                sh 'dotnet build -c Release'
+                echo 'Build Completed...'
             }
         }
         stage('Test') {
             steps {
-                echo 'Testing..'
+                echo 'Test Started..'
+                sh 'dotnet test tests/BLL.UnitTests'
+                echo 'Test Completed..'
             }
-        }
-        stage('Deploy') {
-            steps {
-                echo 'Deploying....'
-            }
-        }
+        } 
     }
 }
