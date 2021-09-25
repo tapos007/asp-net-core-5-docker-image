@@ -49,7 +49,7 @@ namespace BLL.UnitTests
             Assert.Equal("department", exception.ParamName);
             var dataEmptyException =
                 await Assert.ThrowsAsync<Exception>(() => _departmentService.Add(new Department()));
-            Assert.Equal("input is empty name or code", dataEmptyException.Message);
+            Assert.Equal("input is empty name or code1", dataEmptyException.Message);
         }
 
         [Fact]
