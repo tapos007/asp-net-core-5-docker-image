@@ -21,5 +21,32 @@ docker run --name my-dotnetcore  -p 8777:80 \
 --network="tapos-test" \
 -d my-docker:1.0
 ``
+
+## setup jenkins server 
+
+```
+docker run -d --name my-jenkins -v jenkins_home:/var/jenkins_home -p 8080:8080 -p 50000:50000 jenkins/jenkins:lts-jdk11
+
+docker rm -f my-jenkins
+
+docker run -d --name my-jenkins \
+ -v jenkins_home:/var/jenkins_home  \
+ -v /var/run/docker.sock:/var/run/docker.sock \
+ -v $(which docker):/usr/bin/docker \
+ -p 8080:8080 -p 50000:50000  \
+ jenkins/jenkins:lts-jdk11
+
+docker exec -u 0  -it my-jenkins /bin/bash
+chmod 666 /var/run/docker.sock
+
+apt update 
+apt install wget
+
+wget https://packages.microsoft.com/config/debian/11/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
+ &&
+dpkg -i packages-microsoft-prod.deb &&
+rm packages-microsoft-prod.deb
+ta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pos
+```
 ### design & developed by Biswa Nath Ghosh (Tapos)
 

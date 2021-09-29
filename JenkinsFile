@@ -1,8 +1,8 @@
 pipeline {
     agent any
     environment {
-        registry = "https://hub.docker.com/repository/docker/tapos007/dotnet-test"
-        registryCredential = 'dockerhub'
+        registry = "tapos007/dotnet-test:tagname"
+        registryCredential = 'docker'
     }
     stages {
         stage('Clean') {
@@ -24,6 +24,17 @@ pipeline {
                 echo 'Test Started..'
                 sh 'dotnet test tests/BLL.UnitTests'
                 echo 'Test Completed..'
+            }
+        } 
+        stage('publish docker') {
+            steps {
+                echo 'push docker server Started..'
+                withCredentials([usernamePassword(credentialsId: "$registryCredential", passwordVariable: 'DOCKER_REGISTRY_PWD', usernameVariable: 'DOCKER_REGISTRY_USER')]) {
+                    sh "docker build . -t $registry:$BUILD_NUMBER  -f src/API/Dockerfile"
+                    sh "docker login -u ${DOCKER_REGISTRY_USER} -p ${DOCKER_REGISTRY_PWD}"
+                    sh "docker push $registry:$BUILD_NUMBER"
+                }
+                echo 'push docker server Completed..'
             }
         } 
     }
