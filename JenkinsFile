@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        registry = "tapos007/dotnet-test:tagname"
+        registry = "tapos007/dotnet-test"
         registryCredential = 'docker'
     }
     stages {
