@@ -30,8 +30,7 @@ pipeline {
             steps {
                 echo 'push docker server Started..'
                 withCredentials([usernamePassword(credentialsId: "$registryCredential", passwordVariable: 'DOCKER_REGISTRY_PWD', usernameVariable: 'DOCKER_REGISTRY_USER')]) {
-                    sh "cd /src"
-                    sh "docker build . -t $registry:$BUILD_NUMBER  -f /API/Dockerfile"
+                    sh "cd src/ && docker build . -t $registry:$BUILD_NUMBER  -f API/Dockerfile"
                     sh "docker login -u ${DOCKER_REGISTRY_USER} -p ${DOCKER_REGISTRY_PWD}"
                     sh "docker push $registry:$BUILD_NUMBER"
                 }
