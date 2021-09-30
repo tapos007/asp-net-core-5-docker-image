@@ -65,7 +65,7 @@ namespace BLL.UnitTests
            
             var dataEmptyException =
                 await Assert.ThrowsAsync<Exception>(() => _departmentService.Add(_department));
-            Assert.Equal("name or code already in our system", dataEmptyException.Message);
+            Assert.Equal("name or code already in our system1", dataEmptyException.Message);
            
         }
 
